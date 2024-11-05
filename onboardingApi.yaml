@@ -20,7 +20,7 @@ paths:
     post:
       summary: Process employee onboarding
       operationId: onboardEmployee
-      description: Updates the onboarding status for a specified employee
+      description: Updates the onboarding status for a specified employee. See the [Onboard Employee](/docs) page for more information.
       security:
         - HRWebAPIGroup: []
         - SessionAuth: []
