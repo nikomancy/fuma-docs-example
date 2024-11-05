@@ -100,7 +100,7 @@ console.log(result)
 ## Create addresses
 Vault objects are flexible and track associations between objects defined in their schema automatically. For example, when we import the address objects contained in the address.csv file, Vault will automatically associate them with their related users in the system by way of the `employee__c.name__v` field.
 
-The following call to the `/vobjects/address__c` endpoint will create Vault objects for each of the addresses in the address.csv** **file.
+The following call to the `/vobjects/address__c` endpoint will create Vault objects for each of the addresses in the address.csvfile.
 
 ```js
 const { API_VERSION, DNS_DOMAIN } = process.env;
