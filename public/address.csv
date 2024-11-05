@@ -1,0 +1,10 @@
+link__sys,external_id__c,employee__c.name__v,postal_address_line_1__c,postal_address_line_2__c,postal_zip_code__c.name__v,current_address__c
+,,Jim Halpert,123 Sesame Street,Apt. B,18447,true
+,,Pam Beesly,123 Sesame Street,Apt. B,18447,true
+,,Angela Martin,123 Hickory Lane,,18505,true
+,,Kevin Malone,742 Evergreen Terrace,,18519,true
+,,Michael Scott,1725 Slough Avenue,Suite 200,18505,true
+,,Dwight Schrute,Schrute Farms,300 Schrute Rd,18505,true
+,,Oscar Martinez,221B Baker Street,Apt. 3,18505,true
+,,Stanley Hudson,32 Wallaby Way,,18505,true
+,,Meredith Palmer,42 Wallaby Way,,18505,true
