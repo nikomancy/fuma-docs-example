@@ -9,14 +9,14 @@ The Onboarding API in Veeva Vault provides a mechanism to track which employees 
 This guide will walk you through using the Onboarding API in Veeva Vault. In order to follow this guide, you need to have the following items set up:
 
 1. Using version 24.3+ of the Vault API.
-1. Have `employee__c` and `address__c` objects defined in your Vault instance.
-1. Have a basic understanding of [Vault Objects](https://platform.veevavault.help/en/lr/15298/).
-1. Have a username, password, and Vault DNS.
+2. Have `employee__c` and `address__c` objects defined in your Vault instance.
+3. Have a basic understanding of [Vault objects](https://platform.veevavault.help/en/lr/15298/).
+4. Have a username, password, and Vault DNS.
 
 ### Example Data
 This guide will make use of example data provided through the following .csv files.
-- [Employees.csv]()
-- [Addresses.csv]()
+- [employee.csv](/employee.csv)
+- [address.csv](/address.csv)
 
 <Steps>
 <Step> 
@@ -26,10 +26,9 @@ Every meaningful interaction with the Vault API requires authentication. You can
 
 The auth endpoint accepts your username and password and returns a `sessionId` token that you must include on all further calls to the API.
 
-```ts
+```js
 // Never hardcode credentials in a production environment.
-// Store your username and password in a .env file and import it into your 
-// application using the process.env value.
+// Store your username and password in a .env file and import it into your application using the process.env value.
 const { USER_NAME, PASSWORD, API_VERSION, DNS_DOMAIN } = process.env; 
 
 console.log(USER_NAME, PASSWORD, API_VERSION, DNS_DOMAIN);
@@ -57,7 +56,7 @@ For this tutorial, we will log the Session ID to the console and manually add it
 
 In a real application, you will want to keep the Session ID in memory and pass it to other functions when calling the API. 
 
-> For more information on authentication, see the [Authentication docs](https://developer.veevavault.com/docs/) and [Authentication reference](https://developer.veevavault.com/api/24.2/#authentication).
+> For more information on authentication, see the [Authentication docs](https://developer.veevavault.com/docs/#authentication) and [Authentication reference](https://developer.veevavault.com/api/24.2/#authentication).
 
 
 </Step>
@@ -65,11 +64,11 @@ In a real application, you will want to keep the Session ID in memory and pass i
 <Step>
  
 ## Create employees
-After you've authenticated, you can create vault objects in the API. While you can create vault objects by passing individual pieces of data in an API call, it is more convenient to create new objects as batches by passing .csv files in your API calls.
+After you've authenticated, you can create Vault objects in the API. While you can create Vault objects by passing individual pieces of data in an API call, it is more convenient to create new objects as batches by passing .csv files in your API calls.
 
-The following API call to the `/vobjects/employee__c` endpoint will create vault objects corresponding to each of the entries in the employees.csv file.
+The following API call to the `/vobjects/employee__c` endpoint will create Vault objects corresponding to each of the entries in the employee.csv file.
 
-```ts
+```js
 const { API_VERSION, DNS_DOMAIN } = process.env;
 const sessionId = ''; // Add your sessionId here
 
@@ -99,11 +98,11 @@ console.log(result)
 <Step>
 
 ## Create addresses
-Vault Objects are flexible and track associations between objects defined in their schema automatically. For example, when we import the address objects contained in the addresses.csv file, Vault will automatically associate them with their related users in the system by way of the `employee__c.name__v` field.
+Vault objects are flexible and track associations between objects defined in their schema automatically. For example, when we import the address objects contained in the address.csv file, Vault will automatically associate them with their related users in the system by way of the `employee__c.name__v` field.
 
-The following call to the `/vobjects/address__c` endpoint will create vault objects for each of the addresses in the addresses.csv file.
+The following call to the `/vobjects/address__c` endpoint will create Vault objects for each of the addresses in the address.csv** **file.
 
-```ts
+```js
 const { API_VERSION, DNS_DOMAIN } = process.env;
 const sessionId = ''; // Add your sessionId here
 
@@ -144,9 +143,8 @@ WHERE name__v = 'Dwight Schrute'
 
 Which can be passed in the call to the `/query` endpoint.
 
-```ts
+```js
 const { API_VERSION, DNS_DOMAIN } = process.env;
-const sessionId = 'A2A45E3BA1B53F2536A235FEA904D7615EDE3A6206C31D65AB10B7615D684F87D2B4B51899757044D35365F730E60E070D82E15F874867478223961A9050881F';
 const queryString = "SELECT id FROM employee__c WHERE name__v = 'Dwight Schrute'";
 
 const myHeaders = new Headers();
@@ -182,8 +180,7 @@ console.log(id);
 ## Onboard employees
 Now that we have a set of employee and address objects imported into Vault and an `employee__c` id value, we can onboard the employee with a simple call to the `/custom/employee_onboarding` endpoint.
 
-```ts
-// Import the environment variables USER_NAME, PASSWORD, API_VERSION, DNS_DOMAIN
+```js
 const { API_VERSION, DNS_DOMAIN } = process.env;
 const sessionId = ''; // Add your sessionId here
 const employeeId = ''; // Add the employeeId you want to onboard here
@@ -208,8 +205,18 @@ const result = await response.text()
 console.log(result)
 ```
 
-
-
 </Step>
 
 </Steps>
+
+## Next Steps
+You've now successfully:
+- Authenticated with the Vault API
+- Created employee and address objects from CSV data
+- Located a specific employee using VQL
+- Onboarded an employee using the Onboarding API
+
+This guide covered the basics of employee onboarding, but the Vault API offers many more capabilities. For complete details about available endpoints, parameters, and response formats, check out our [API Reference for employee onboarding](/onboard-employee) or explore these related topics:
+
+Need help? Join our [Developer Community](https://developer.veevavault.com/community) or contact [Vault Support](https://support.veevavault.com).
+
