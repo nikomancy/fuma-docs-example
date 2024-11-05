@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: Employee Onboarding API
+  version: '24.3.0'
+  description: API for handling employee onboarding processes
+servers:
+  - url: https://{vaultDNS}/api/{version}
+    variables:
+      vaultDNS:
+        description: The DNS name of the Vault server
+        default: vault.example.com
+      version:
+        description: API version
+        default: v24.3
+        enum:
+          - v24.3
+
+paths:
+  /custom/employee_onboarding:
+    post:
+      summary: Process employee onboarding
+      operationId: onboardEmployee
+      description: Updates the onboarding status for a specified employee
+      security:
+        - HRWebAPIGroup: []
+        - SessionAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - employeeId
+                - onboardingDate
+              properties:
+                employee_id:
+                  type: string
+                  description: Existing Employee Record ID
+                  example: V60000000001001
+                  pattern: '^V\d{14}$'
+                onboarding_date:
+                  type: string
+                  format: date
+                  description: Date of onboarding. Must be in the format YYYY-MM-DD and must be a future date.
+                  example: '2024-11-03'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [SUCCESS]
+                    description: Indicates successful employee record update
+        '400':
+          description: Bad request - Invalid employee ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [FAILURE]
+                    description: Indicates invalid employee ID provided
+        '401':
+          description: Unauthorized - Invalid or missing session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [UNAUTHORIZED]
+                  message:
+                    type: string
+                    enum: ['Invalid or missing session ID']
+        '404':
+          description: Resource not found or insufficient permissions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [MALFORMED_URL]
+                  message:
+                    type: string
+                    enum: ['The specified resource cannot be found']
+
+components:
+  securitySchemes:
+    SessionAuth:
+      type: apiKey
+      description: Session ID for authentication
+      name: Authorization
+      in: header
+    HRWebAPIGroup:
+      type: apiKey
+      description: API key for HR Web API Group access
+      name: X-API-Key
+      in: header
